@@ -1,0 +1,85 @@
+{
+  "name": "project-exporter",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infinitehoax/project-exporter.git"
+  },
+  "displayName": "Project Exporter",
+  "description": "Export the current workspace (structure + source code) as Markdown, JSON or plain text.",
+  "main": "./dist/extension.js",
+  "engines": { "vscode": "^1.90.0" },
+
+  "activationEvents": [
+    "onCommand:projectExporter.exportProject",
+    "onCommand:projectExporter.quickExport",
+    "onCommand:projectExporter.addCustomExclusion",
+    "onCommand:projectExporter.openSettings"
+  ],
+
+  "contributes": {
+    "commands": [
+      { "command": "projectExporter.exportProject",        "title": "Project Exporter: Full Export" },
+      { "command": "projectExporter.quickExport",         "title": "Project Exporter: Quick Export (file / selection)" },
+      { "command": "projectExporter.addCustomExclusion",  "title": "Project Exporter: Add Ignore Pattern…" },
+      { "command": "projectExporter.openSettings",        "title": "Project Exporter: Open Settings (Side Bar)" }
+    ],
+
+    "configuration": {
+      "title": "Project Exporter",
+      "properties": {
+        "projectExporter.customExclusions": {
+          "type": "array",
+          "default": [],
+          "description": "Glob patterns to ignore during export."
+        },
+        "projectExporter.structureStyle": {
+          "type": "string",
+          "enum": ["emoji", "ascii"],
+          "default": "emoji",
+          "description": "How the project tree is rendered in exports."
+        }
+      }
+    },
+
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "projectExporter",
+          "title": "Exporter",
+          "icon": "media/exporter.svg"
+        }
+      ]
+    },
+
+    "views": {
+      "projectExporter": [
+        {
+          "id":   "projectExporter.settingsView",
+          "name": "Settings",
+          "type": "webview"    
+        }
+      ]
+    }
+  },
+
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -w -p .",
+    "vscode:prepublish": "npm run compile",
+    "package": "npm run compile && npx vsce package"
+  },
+
+  "dependencies": {
+    "micromatch": "^4.0.5"
+  },
+
+  "devDependencies": {
+    "@types/micromatch": "^4.0.9",
+    "@types/node": "^20.11.30",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.3.2",
+    "@vscode/test-electron": "^2.4.2",
+    "typescript": "^5.4.0"
+  }
+}
